@@ -15,11 +15,9 @@ pipeline {
 
         stage('Build Maven JARs') {
             steps {
-                sh '''
-                    cd naming-server && mvn clean package -DskipTests
-                    cd ../coupon-app && mvn clean package -DskipTests
-                    cd ../product-app && mvn clean package -DskipTests
-                '''
+                dir('naming-server') { sh 'mvn clean package -DskipTests' }
+                dir('coupon-app')    { sh 'mvn clean package -DskipTests' }
+                dir('product-app')   { sh 'mvn clean package -DskipTests' }
             }
         }
 
@@ -36,12 +34,18 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 sh '''
-                    echo $DOCKER_CREDS_PSW | docker login -u $DOCKER_USER --password-stdin
+                    echo "$DOCKER_CREDS_PSW" | docker login -u "$DOCKER_CREDS_USR" --password-stdin
                     docker push $DOCKER_USER/naming-server:latest
                     docker push $DOCKER_USER/coupon-app:latest
                     docker push $DOCKER_USER/product-app:latest
                 '''
             }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker logout || true'
         }
     }
 }
