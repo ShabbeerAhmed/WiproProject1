@@ -14,7 +14,8 @@
 	<name>product-app</name>
 
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
+		<maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
 		<spring-cloud.version>2025.1.4</spring-cloud.version>
 	</properties>
 
@@ -55,6 +56,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+    		<groupId>com.h2database</groupId>
+    		<artifactId>h2</artifactId>
+    		<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator-test</artifactId>
 			<scope>test</scope>
@@ -80,6 +87,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>product-app</finalName>
 	</build>
 
 </project>
